@@ -1,33 +1,17 @@
 import NeuralNetwork from "./nn-mod.js";
+import {
+  binaryToNumber,
+  charFromNumber,
+  charToBinary,
+  numberToBinary,
+  addPadding,
+} from "./utility.js";
 
 let inputs = 2;
 let outputs = 128;
 let nnAdd = new NeuralNetwork(inputs, 2, outputs);
 let max = 1 + outputs / 2; // 8 / 2 = 4 + 1 -> 5
 
-function numberToBinary(number) {
-  if (number === 0) {
-    return new Array(outputs).fill(0);
-  }
-  let binary = [];
-  while (number > 0) {
-    binary.unshift(number % 2); // unshift instead of push to add binary digits from left to right
-    number = Math.floor(number / 2);
-  }
-  while (binary.length < 8) {
-    binary.unshift(0); // add leading 0's to pad the binary number to 8 digits
-  }
-
-  return binary;
-}
-
-function charToBinary(char) {
-  // convert char to unicode number
-  let unicode = char.charCodeAt(0);
-  // convert unicode to binary
-  let binary = numberToBinary(unicode);
-  return binary;
-}
 
 function getOutput(num1, num2) {
   let sum = num1 + num2;
@@ -77,10 +61,6 @@ let alg = {
   space: charToBinary(" "),
 };
 
-function charFromNumber(number) {
-  let char = String.fromCharCode(number);
-  return char;
-}
 
 function equation(...args) {
   let big = [];
@@ -179,16 +159,7 @@ for (let i = 0; i < answers.length; i++) {
   }
   answers[i] = equation1;
 }
-function addPadding(list) {
-  let big = list;
-  if (big.length < 64) {
-    let diff = 64 - big.length;
-    for (let j = 0; j < diff; j++) {
-      big.push(0);
-    }
-  }
-  return big;
-}
+
 let bigs = [];
 for (let i = 0; i < questions.length; i++) {
   bigs.push(addPadding(questions[i].flatMap((x) => x)));
@@ -224,14 +195,7 @@ function divideOutput(list) {
   return l;
 }
 
-function binaryToNumber(binary) {
-  let number = 0;
-  for (let i = 0; i < binary.length; i++) {
-    number += binary[i] * Math.pow(2, i);
-  }
-  ``;
-  return number;
-}
+
 
 function toReadable(list) {
   let l = [];
