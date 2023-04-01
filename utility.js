@@ -32,6 +32,12 @@ export const binaryToNumber = (binary) => {
     return number;
 };
 
+// Padding and List Manipulation
+
+// [[1], [2]] into [1, 2]
+export const flattenList = (list) => list.flatMap((x) => x);
+export const flattenWithPadding = (...args) => addPadding(flattenList(args));
+
 export const addPadding = (list) => {
     const paddedList = list;
     const paddingToAdd = 64 - paddedList.length;
@@ -39,4 +45,35 @@ export const addPadding = (list) => {
         paddedList.push(0);
     }
     return paddedList;
+};
+
+// [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0] into
+// 10101010
+// 10101010
+export const formatListIntoSectionText = (list) => {
+    let output = "";
+    for (let i = 0; i < list.length; i++) {
+        output += list[i];
+        if (output.length === 8) {
+            output = "";
+        }
+    }
+    return output;
+};
+
+// [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0] into
+// [[1, 0, 1, 0, 1, 0, 1, 0] [1, 0, 1, 0, 1, 0, 1, 0]]
+export const formatListIntoSectionArrays = (list) => {
+    let l = [];
+    if (list.length % 8 === 0) {
+      let temp = [];
+      for (let i = 0; i < list.length; i++) {
+        temp.push(list[i]);
+        if (temp.length === 8) {
+          l.push(temp);
+          temp = [];
+        }
+      }
+    }
+    return l;
 };
