@@ -169,7 +169,7 @@ export default class NeuralNetwork {
     return nn;
   }
 
-  fromJson(data) {
+  deserialize(data) {
     if (typeof data == "string") {
       data = JSON.parse(data);
     }
